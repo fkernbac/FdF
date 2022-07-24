@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/07/20 18:12:08 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/07/24 17:43:09 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_map	*read_map(int fd)
 				map->first = current;
 				x++;
 			}
-			current->right = new_vertex(x, y, ft_atoi(split[x]), current);
-			current = current->right;
+			current->next = new_vertex(x, y, ft_atoi(split[x]), current);
+			current = current->next;
 			map->x_max = x;
 			x++;
 		}
@@ -65,7 +65,7 @@ void	draw_map(mlx_image_t *img, t_map *map)
 	while (current != NULL)
 	{
 		mlx_put_pixel(img, current->x, current->y, color);
-		current = current->right;
+		current = current->next;
 	}
 }
 
@@ -80,7 +80,7 @@ void	rotate_map(t_map *map)
 		old = current->x;
 		current->x += map->y_max - current->y;
 		current->y += old;
-		current = current->right;
+		current = current->next;
 	}
 }
 
@@ -91,8 +91,8 @@ void	squish_map(t_map *map)
 	current = map->first;
 	while (current != NULL)
 	{
-		current->y *= 1.5;
-		current = current->right;
+		current->y *= 1.4;
+		current = current->next;
 	}
 }
 
@@ -107,7 +107,7 @@ void	draw_grid(mlx_image_t *img, t_map *map)
 			draw_line(current, current->right, img);
 		if (current->up != NULL)
 			draw_line(current, current->up, img);
-		current = current->right;
+		current = current->next;
 	}
 }
 
@@ -121,7 +121,7 @@ void	standard_zoom(t_map *map, int factor)
 		current->x *= factor;
 		current->y *= factor;
 		current->z *= factor;
-		current = current->right;
+		current = current->next;
 	}
 }
 

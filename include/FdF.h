@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/07/20 17:08:57 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/07/24 16:31:29 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ typedef struct s_vertex
 	int				x;
 	int				y;
 	int				z;
+	int				row;
+	int				col;
+	struct s_vertex	*next;
+	struct s_vertex	*prev;
 	struct s_vertex	*left;
 	struct s_vertex	*right;
 	struct s_vertex	*up;
