@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:37:35 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/07/24 17:43:41 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/01 18:04:12 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,31 @@
 
 #include "FdF.h"
 
-void	draw_diagonal(t_vert *start, t_vert *end, int sign, mlx_image_t *img)
+void	draw_straight(t_vert *start, t_vert *end, int delta_x, int delta_y)
+{
+	int	x;
+	int	y;
+
+	x = start->x;
+	y = start->y;
+	while (delta_x == 0 && delta_y > 0 && y <= end->y)
+	{
+		pixelcheck(x, y, start->color, start->map->img);
+		y++;
+	}
+	while (delta_x == 0 && delta_y < 0 && y >= end->y)
+	{
+		pixelcheck(x, y, start->color, start->map->img);
+		y--;
+	}
+	while (delta_y == 0 && x <= end->x)
+	{
+		pixelcheck(x, y, start->color, start->map->img);
+		x++;
+	}
+}
+
+void	draw_diagonal(t_vert *start, t_vert *end, int sign)
 {
 	int	x;
 	int	y;
@@ -29,86 +53,80 @@ void	draw_diagonal(t_vert *start, t_vert *end, int sign, mlx_image_t *img)
 			y++;
 		else
 			y--;
-		mlx_put_pixel(img, x, y, 0xFFFF00FF);
+		pixelcheck(x, y, start->color, start->map->img);
 	}
 }
 
-//steile linien nach unten (-> oben) funktionieren nicht
-void	draw_bresenham(t_vert *start, t_vert *end, int up, mlx_image_t *img)
+void	bresenham_low(t_vert *start, t_vert *end, int delta_x, int delta_y)
 {
 	int	x;
 	int	y;
 	int	error;
+	int	step;
+
+	x = start->x;
+	y = start->y;
+	error = -delta_x;
+	step = 1;
+	if (start->y > end->y)
+		step = -1;
+	while (x != end->x)
+	{
+		pixelcheck(x, y, start->color, start->map->img);
+		x++;
+		error += 2 * delta_y;
+		if (error > 0)
+		{
+			y += step;
+			error -= 2 * delta_x;
+		}
+	}
+}
+
+void	bresenham_high(t_vert *start, t_vert *end, int delta_x, int delta_y)
+{
+	int	x;
+	int	y;
+	int	error;
+	int	step;
+
+	x = start->x;
+	y = start->y;
+	error = -delta_y;
+	step = 1;
+	if (start->y > end->y)
+		step = -1;
+	while (y != end->y)
+	{
+		pixelcheck(x, y, start->color, start->map->img);
+		y += step;
+		error += 2 * delta_x;
+		if (error > 0)
+		{
+			x++;
+			error -= 2 * delta_y;
+		}
+	}
+}
+
+void	draw_line(t_vert *start, t_vert *end)
+{
 	int	delta_x;
 	int	delta_y;
 
 	delta_x = end->x - start->x;
 	delta_y = end->y - start->y;
-	x = start->x;
-	y = start->y;
-	//flach
-	if (abs(delta_y < abs(delta_x)))
-	{
-		error = -abs(delta_x);
-		while (x <= end->x)
-		{
-			mlx_put_pixel(img, x, y, 0xFF00FFFF);
-			x++;
-			error += 2 * abs(delta_y);
-			if (error > 0)
-			{
-				y += up;
-				error -= 2 * delta_x;
-			}
-		}
-	}
-	//steil
+	if (delta_x == 0 || delta_y == 0)
+		draw_straight(start, end, delta_x, delta_y);
+	else if (delta_y == delta_x || delta_y == delta_x * -1)
+		draw_diagonal(start, end, delta_y / delta_x);
 	else
 	{
-		error = -abs(delta_y);
-		while (y <= end->y)
-		{
-			mlx_put_pixel(img, x, y, 0xFF00FFFF);
-			y += up;
-			error += 2 * abs(delta_x);
-			if (error > 0)
-			{
-				x++;
-				error -= 2 * abs(delta_y);
-			}
-		}
+		delta_x = abs(delta_x);
+		delta_y = abs(delta_y);
+		if (delta_y < delta_x)
+			bresenham_low(start, end, delta_x, delta_y);
+		else if (delta_y > delta_x)
+			bresenham_high(start, end, delta_x, delta_y);
 	}
-
-
-	// 	delta_x = end->x - start->x;
-	// delta_y = end->y - start->y;
-	// x = start->x;
-	// y = start->y;
-	// error = sign;
-	// error = 0;
-	// while (x <= end->x)
-	// {
-	// 	mlx_put_pixel(img, x, y, 0xFF00FFFF);
-	// 	x++;
-	// 	error += 2 * delta_y;
-	// 	if (error > delta_x)
-	// 	{
-	// 		y++;
-	// 		error -= 2 * delta_x;
-	// 	}
-	// }
-}
-
-void	draw_line(t_vert *start, t_vert *end, mlx_image_t *img)
-{
-	int	slope;
-
-	slope = end->y - start->y;
-	// if (slope == 1 || slope == -1)
-	// 	draw_diagonal(start, end, slope, img);
-	// else
-	if (end->y > start->y)
-		draw_bresenham(start, end, 1, img);
-	else
-		draw_bresenham(start, end, -1, img);
 }

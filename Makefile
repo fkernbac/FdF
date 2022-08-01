@@ -13,27 +13,28 @@
 # gcc main.c MLX42/libmlx42.a MLX42/libglfw3.a -I MLX42/include -framework Cocoa -framework OpenGL -framework IOKit
 
 NAME = FdF
-
-SRC = main.c struct_utils.c line.c
-
+SRC = transform.c hooks.c struct_utils.c line.c mlx_utils.c color.c main.c
+OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
+OBJ_PATH = objs/
 LIB = libft/libft.a MLX42/libglfw3.a MLX42/libmlx42.a
-
-INC = include/
-
-FLAGS =  -Wall -Wextra -Werror -framework Cocoa -framework OpenGL -framework IOKit -fsanitize=address -lm
+INC = -Iinclude/
+FLAGS = -Wall -Wextra -Werror #-fsanitize=address
+LINKER = -framework Cocoa -framework OpenGL -framework IOKit -lm
 
 all: $(NAME)
 
-$(NAME):
-	gcc $(SRC) $(LIB) -I$(INC) $(FLAGS) -o $@
+$(NAME): $(OBJ)
+	gcc $(LIB) $(LINKER) $(INC) $(OBJ) -o $@
 
-test:
-	gcc example.c $(LIB) -I$(INC) $(FLAGS) -o $@
+$(OBJ_PATH)%.o: %.c
+	mkdir -p $(OBJ_PATH)
+	gcc -c $(FLAGS) $(INC) $< -o $@
 
 libft:
 	make -C libft/ re
 
 clean:
+	/bin/rm -f $(OBJ_PATH)*.o
 	/bin/rm -f *.o
 
 fclean: clean
@@ -41,4 +42,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:  all clean fclean re libft visualizer bonus
+.PHONY:  all clean fclean re libft

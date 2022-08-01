@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/07/24 16:31:29 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/01 17:44:11 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,33 @@
 # include <math.h>
 # include "MLX42/MLX42.h"
 # include "libft.h"
+# define WIDTH 900
+# define HEIGHT 900
 
 typedef struct s_map
 {
-	int				f_zoom;
-	int				f_height;
-	int				x_max;
-	int				y_max;
-	struct s_vertex	*first;
-	struct s_vertex	*last;
-}					t_map;
+	int					zoom;
+	struct mlx_image	*img;
+	int					instance;
+	struct mlx			*mlx;
+	struct s_vertex		*first;
+	struct s_vertex		*row_end;
+	struct s_vertex		*col_end;
+	struct s_vertex		*last;
+}						t_map;
 
 typedef struct s_vertex
 {
 	int				x;
 	int				y;
 	int				z;
+	int				xo;
+	int				yo;
+	int				zo;
 	int				row;
 	int				col;
+	uint32_t		color;
+	struct s_map	*map;
 	struct s_vertex	*next;
 	struct s_vertex	*prev;
 	struct s_vertex	*left;
@@ -42,9 +51,24 @@ typedef struct s_vertex
 }					t_vert;
 
 //structs
-t_vert	*new_vertex(int x, int y, int z, t_vert *left);
+t_map	*read_map(int fd);
+t_vert	*new_vertex(int x, int y, int z, char *color, t_vert *left);
 void	connect_vertices(t_map *map);
+void	set_original(t_map *map);
+int		str_to_color(char *str);
 //graphics
-void	draw_line(t_vert *start, t_vert *end, mlx_image_t *img);
+void	draw_line(t_vert *start, t_vert *end);
+void	standard_zoom(t_map *map, int factor);
+void	zoom(t_map *map, int in);
+void	translate(t_map *map, int x, int y);
+void	draw_grid(t_map *map);
+//transform
+void	zoom(t_map *map, int in);
+void	center_map(t_map *map);
+//mlx
+int		pixelcheck(int x, int y, uint32_t color, mlx_image_t *img);
+void	hook(void *param);
+void	keyhook(mlx_key_data_t keydata, void *param);
+void	update_image(t_map *map, int in);
 
 #endif
