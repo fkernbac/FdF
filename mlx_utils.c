@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 15:08:15 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/01 20:46:25 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/09 18:45:34 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ int	pixelcheck(int x, int y, uint32_t color, mlx_image_t *img)
 	return(1);
 }
 
+int	get_mid_x(t_map *map)
+{
+	return ((map->mlx->width / 2) - map->img->instances[map->instance].x);
+}
+
+int	get_mid_y(t_map *map)
+{
+	return ((map->mlx->height / 2) - map->img->instances[map->instance].y);
+}
+
 void	update_image(t_map *map, int in)
 {
 	int			x;
@@ -46,32 +56,30 @@ void	update_image(t_map *map, int in)
 	x = map->img->instances[map->instance].x;
 	y = map->img->instances[map->instance].y;
 	mlx_delete_image(map->mlx, map->img);
-	map->img = mlx_new_image(map->mlx, map->row_end->x + 1, map->last->y + 1);
+	map->img = mlx_new_image(map->mlx, map->row_end->x + 1, abs(map->highest->y) + abs(map->deepest->y) + 1);
 	if (map->img == NULL)
 		exit(0);
 	draw_grid(map);
 	map->instance = mlx_image_to_window(map->mlx, map->img, x, y);
 	if (in == 1)
 	{
-		map->img->instances[map->instance].x -= map->img->width / 4;
-		map->img->instances[map->instance].y -= map->img->height / 4;
+		map->img->instances[map->instance].x -= get_mid_x(map);
+		map->img->instances[map->instance].y -= get_mid_y(map);
 	}
 	else
 	{
-		map->img->instances[map->instance].x += map->img->width / 2;
-		map->img->instances[map->instance].y += map->img->height / 2;
+		map->img->instances[map->instance].x += get_mid_x(map) / 2;
+		map->img->instances[map->instance].y += get_mid_y(map) / 2;
 	}
 	ft_printf("%dx%d\n", map->img->width, map->img->height);
-	mlx_put_pixel(map->img, 0, 0, 0xFF0000FF);
-	mlx_put_pixel(map->img, 0, map->img->height - 1, 0xFF0000FF);
-	mlx_put_pixel(map->img, map->img->width - 1, 0, 0xFF0000FF);
-	mlx_put_pixel(map->img, map->img->width - 1, map->img->height - 1, 0xFF0000FF);
+	pixelcheck(get_mid_x(map), get_mid_y(map), 0xFF00FFFF, map->img);
 }
 
 void	draw_grid(t_map *map)
 {
 	t_vert	*current;
 
+	center_map(map);
 	current = map->first;
 	while (current != NULL)
 	{

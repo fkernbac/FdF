@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:47:22 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/01 17:56:18 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/09 17:35:38 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ t_vert	*new_vertex(int x, int y, int z, char *color, t_vert *prev)
 	new->x = x;
 	new->y = y;
 	new->z = z;
-	if (color != NULL)
-		new->color = str_to_color(color);
-	else
-		new->color = 0xFFFFFFFF;
+	new->color = str_to_color(color);
 	new->next = NULL;
 	new->prev = prev;
 	new->left = NULL;
@@ -59,10 +56,24 @@ void	connect_vertices(t_map *map)
 	}
 }
 
+char	*remove_newline(char *str)
+{
+	int	i;
+
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	while (str[i++] != '\0')
+		if (str[i] == '\n')
+			str[i] = '\0';
+	return (str);
+}
+
 void	str_to_lst(t_map *map, char *string, int x, int y)
 {
 	char	**colorsplit;
 
+	string = remove_newline(string);
 	colorsplit = ft_split(string, ',');
 	if (colorsplit == NULL)
 		exit(0);
@@ -93,7 +104,7 @@ t_map	*read_map(int fd)
 	map->col_end = NULL;
 	while (1)
 	{
-		line = get_next_line(fd, 10);
+		line = get_next_line(fd, READ_SIZE);
 		if (line == NULL)
 			break ;
 		split = ft_split(line, ' ');
@@ -122,6 +133,23 @@ void	set_original(t_map *map)
 		current->xo = current->x;
 		current->yo = current->y;
 		current->zo = current->z;
+		current = current->next;
+	}
+}
+
+void	get_height(t_map *map)
+{
+	t_vert	*current;
+
+	current = map->first;
+	map->highest = current;
+	map->deepest = current;
+	while (current != NULL)
+	{
+		if (current->y > map->highest->y)
+			map->highest = current;
+		if (current->y < map->deepest->y)
+			map->deepest = current;
 		current = current->next;
 	}
 }

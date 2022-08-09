@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/01 20:12:22 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/09 19:07:42 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	squish_map(t_map *map)
 	current = map->first;
 	while (current != NULL)
 	{
-		current->y *= 0.7;
+		current->y *= 0.6;
 		current = current->next;
 	}
 }
@@ -47,7 +47,7 @@ void	setup_window(t_map *map)
 	int		height;
 
 	width = map->row_end->x + 1;
-	height = map->last->y + 1;
+	height = abs(map->highest->y) + abs(map->deepest->y);
 	map->mlx = mlx_init(HEIGHT, WIDTH, "FdF", true);
 	if (map->mlx == NULL)
 		exit(0);
@@ -70,7 +70,7 @@ void	add_height(t_map *map)
 	current = map->first;
 	while (current != NULL)
 	{
-		current->y -= current->z * 0.1;
+		current->y -= current->z * DEPTH;
 		current = current->next;
 	}
 }
@@ -100,15 +100,16 @@ int	main(int argc, char **argv)
 	map = read_map(fd);
 	close(fd);
 	connect_vertices(map);
+	print_coordinates(map);
 	set_maxima(map);
 	rotate_map(map);
-	standard_zoom(map, 10);
+	standard_zoom(map);
 	add_height(map);
-	// squish_map(map);
+	squish_map(map);
 	set_original(map);
+	get_height(map);
 	setup_window(map);
 	mlx_set_window_pos(map->mlx, 100, 300);
-	center_map(map);
 	draw_grid(map);
 	mlx_key_hook(map->mlx, &keyhook, map);
 	mlx_loop(map->mlx);

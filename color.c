@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:41:41 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/01 17:55:46 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/08 20:03:53 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,22 @@ int	ctoi(char c)
 
 int	str_to_color(char *str)
 {
-	int	r;
-	int	g;
-	int	b;
-	int	a;
+	int	len;
+	int	color;
 
+	color = 0xFFFFFFFF;
+	if (str == NULL)
+		return (color);
+	len = ft_strlen(str);
 	if (str[0] != '0' && str[1] != 'x')
-		exit(0);
-	r = ctoi(str[2]) * 16 + ctoi(str[3]);
-	g = ctoi(str[4]) * 16 + ctoi(str[5]);
-	b = ctoi(str[6]) * 16 + ctoi(str[7]);
-	if (str[8] == '\0' || str[9] == '\0')
-		a = 255;
-	else
-		a = ctoi(str[8]) * 16 + ctoi(str[9]);
-	return (get_rgba(r, g, b, a));
+		perror("Map file colors not formatted correctly.");
+	if (len == 4)
+		color = get_rgba(0, 0, ctoi(str[2]) * 16 + ctoi(str[3]), 255);
+	else if (len == 6)
+		color = get_rgba(0, ctoi(str[2]) * 16 + ctoi(str[3]), ctoi(str[4]) * 16 + ctoi(str[5]), 255);
+	else if (len == 8)
+		color = get_rgba(ctoi(str[2]) * 16 + ctoi(str[3]), ctoi(str[4]) * 16 + ctoi(str[5]), ctoi(str[6]) * 16 + ctoi(str[7]), 255);
+	else if (len == 10)
+		color = get_rgba(ctoi(str[2]) * 16 + ctoi(str[3]), ctoi(str[4]) * 16 + ctoi(str[5]), ctoi(str[6]) * 16 + ctoi(str[7]), ctoi(str[8]) * 16 + ctoi(str[9]));
+	return (color);
 }

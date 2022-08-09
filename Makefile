@@ -13,7 +13,7 @@
 # gcc main.c MLX42/libmlx42.a MLX42/libglfw3.a -I MLX42/include -framework Cocoa -framework OpenGL -framework IOKit
 
 NAME = FdF
-SRC = transform.c hooks.c struct_utils.c line.c mlx_utils.c color.c main.c
+SRC = transform.c hooks.c struct_utils.c line.c mlx_utils.c color.c main.c testing.c
 OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 OBJ_PATH = objs/
 LIB = libft/libft.a MLX42/libglfw3.a MLX42/libmlx42.a
