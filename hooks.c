@@ -6,28 +6,11 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:03:21 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/09 18:53:32 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/14 18:16:14 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
-
-// void	hook(void *param)
-// {
-// 	t_map	*map;
-
-// 	map = param;
-// 	// if (mlx_is_key_down(param, MLX_KEY_ESCAPE))
-// 	// 	mlx_close_window(map->mlx);
-// 	if (mlx_is_key_down(param, MLX_KEY_UP))
-// 		map->img->instances[0].y -= 5;
-// 	// if (mlx_is_key_down(param, MLX_KEY_DOWN))
-// 	// 	map->img->instances[0].y += 5;
-// 	// if (mlx_is_key_down(param, MLX_KEY_LEFT))
-// 	// 	map->img->instances[0].x -= 5;
-// 	// if (mlx_is_key_down(param, MLX_KEY_RIGHT))
-// 	// 	map->img->instances[0].x += 5;
-// }
 
 int	check_zoom(t_map *map, int in)
 {
@@ -46,7 +29,7 @@ int	check_zoom(t_map *map, int in)
 		width /= ZOOM;
 		height /= ZOOM;
 	}
-	if (abs(width * height) >= 200000000 || width < 20 || height < 20)
+	if (abs(width * height) >= 100000000 || width < 20 || height < 20)
 		return (0);
 	return (1);
 }
@@ -57,13 +40,10 @@ void	keyhook(mlx_key_data_t keydata, void *param)
 
 	map = param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-	{
-		mlx_terminate(map->mlx);
-		exit(1);
-	}
+		terminate(map);
 	if (keydata.key == MLX_KEY_W \
 		&& (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-			map->img->instances[map->instance].y += 20;
+		map->img->instances[map->instance].y += 20;
 	if (keydata.key == MLX_KEY_S \
 		&& (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
 		map->img->instances[0].y -= 20;

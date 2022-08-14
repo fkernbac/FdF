@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/09 19:04:38 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/14 18:16:23 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # define READ_SIZE 50
 # define WIDTH 900
 # define HEIGHT 900
-# define DEPTH 0.05
+# define DEPTH 0.5
 # define ZOOM 2
+# define SQUISH 0.5
 
 typedef struct s_map
 {
@@ -29,8 +30,8 @@ typedef struct s_map
 	int					instance;
 	struct mlx			*mlx;
 	struct s_vertex		*first;
-	struct s_vertex		*row_end;
-	struct s_vertex		*col_end;
+	struct s_vertex		*corner_r;
+	struct s_vertex		*corner_l;
 	struct s_vertex		*last;
 	struct s_vertex		*highest;
 	struct s_vertex		*deepest;
@@ -59,10 +60,12 @@ typedef struct s_vertex
 //structs
 t_map	*read_map(int fd);
 t_vert	*new_vertex(int x, int y, int z, char *color, t_vert *left);
+t_vert	*delete_vertex(t_vert *vertex);
 void	connect_vertices(t_map *map);
 void	set_original(t_map *map);
 int		str_to_color(char *str);
 void	get_height(t_map *map);
+void	setup_map(t_map *map);
 //graphics
 void	draw_line(t_vert *start, t_vert *end);
 void	standard_zoom(t_map *map);
@@ -79,5 +82,7 @@ void	keyhook(mlx_key_data_t keydata, void *param);
 void	update_image(t_map *map, int in);
 //utilities
 void	print_coordinates(t_map *map);
+char	**free_split(char **split);
+void	terminate(t_map *map);
 
 #endif

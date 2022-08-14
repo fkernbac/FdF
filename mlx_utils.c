@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 15:08:15 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/09 18:45:34 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/14 16:06:05 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	update_image(t_map *map, int in)
 	x = map->img->instances[map->instance].x;
 	y = map->img->instances[map->instance].y;
 	mlx_delete_image(map->mlx, map->img);
-	map->img = mlx_new_image(map->mlx, map->row_end->x + 1, abs(map->highest->y) + abs(map->deepest->y) + 1);
+	map->img = mlx_new_image(map->mlx, map->corner_r->x + 1, abs(map->highest->y) + abs(map->deepest->y) + 1);
 	if (map->img == NULL)
 		exit(0);
 	draw_grid(map);
@@ -71,8 +71,7 @@ void	update_image(t_map *map, int in)
 		map->img->instances[map->instance].x += get_mid_x(map) / 2;
 		map->img->instances[map->instance].y += get_mid_y(map) / 2;
 	}
-	ft_printf("%dx%d\n", map->img->width, map->img->height);
-	pixelcheck(get_mid_x(map), get_mid_y(map), 0xFF00FFFF, map->img);
+	// ft_printf("%dx%d\n", map->img->width, map->img->height);
 }
 
 void	draw_grid(t_map *map)

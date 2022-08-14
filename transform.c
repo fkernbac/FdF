@@ -6,54 +6,11 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:31:55 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/09 17:57:48 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/14 17:06:02 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
-
-// void	standard_zoom(t_map *map)
-// {
-// 	t_vert	*current;
-// 	int		factor;
-
-// 	current = map->first;
-// 	factor = 10;
-// 	while (current != NULL)
-// 	{
-// 		current->x *= factor;
-// 		current->y *= factor;
-// 		current->z *= factor;
-// 		current = current->next;
-// 	}
-// }
-
-void	standard_zoom(t_map *map)
-{
-	int		dis_x;
-	int		dis_y;
-	int		factor;
-	t_vert	*current;
-
-	dis_x = HEIGHT / map->row_end->x;
-	dis_y = WIDTH / map->last->y;
-	if (dis_x < 5)
-		dis_x = 5;
-	if (dis_y < 5)
-		dis_y = 5;
-	if (dis_x > dis_y)
-		factor = dis_x;
-	else
-		factor = dis_y;
-	current = map->first;
-	while (current != NULL)
-	{
-		current->x *= factor;
-		current->y *= factor;
-		current->z *= factor;
-		current = current->next;
-	}
-}
 
 void	zoom(t_map *map, int in)
 {
