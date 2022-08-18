@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:02:08 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/18 16:12:13 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:46:20 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,47 @@ void	draw_image(t_map *map)
 	pixelcheck(map->img->width / 2, map->img->height / 2, 0xFF0000FF, map->img);
 }
 
-// void	measure_map(t_map *map)
-// {
-// 	t_vert	*current;
+void	measure_map(t_map *map)
+{
+	t_vert	*current;
 
-// 	current = map->first;
-// 	map->height = 0;
-// 	map->width = 0;
-// 	while (current)
-// 	{
-// 		if (current->x > map->width)
-// 			map->width = current->x;
-// 		if (current->y > map->height)
-// 			map->height = current->y;
-// 		current = current->next;
-// 	}
-// }
+	current = map->first;
+	map->highest = current;
+	map->deepest = current;
+	while (current)
+	{
+		if (current->y > map->highest->y)
+			map->highest = current;
+		if (current->y < map->deepest->y)
+			map->deepest = current;
+		current = current->next;
+	}
+	map->height = abs(map->deepest->y) + abs(map->highest->y);
+}
+
+void	adjust_map(t_map *map)
+{
+	t_vert	*current;
+
+	current = map->first;
+	while(current)
+	{
+		current->y += abs(map->highest->y);
+		current = current->next;
+	}
+}
 
 void	update(t_map *map)
 {
 	int	x;
 	int	y;
+	int	old_height;
 
 	x = map->img->instances[map->instance].x;
 	y = map->img->instances[map->instance].y;
+	old_height = map->img->height;
+	measure_map(map);
+	adjust_map(map);
 	mlx_delete_image(map->mlx, map->img);
 	map->img = mlx_new_image(map->mlx, map->width, map->height);
 	if (map->img == NULL)
