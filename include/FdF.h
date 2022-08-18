@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/14 18:16:23 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:20:25 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 typedef struct s_map
 {
 	int					zoom;
+	int					rotation;
+	int					height;
+	int					width;
+	struct s_vertex		*highest;
+	struct s_vertex		*deepest;
 	struct mlx_image	*img;
 	int					instance;
 	struct mlx			*mlx;
@@ -33,8 +38,6 @@ typedef struct s_map
 	struct s_vertex		*corner_r;
 	struct s_vertex		*corner_l;
 	struct s_vertex		*last;
-	struct s_vertex		*highest;
-	struct s_vertex		*deepest;
 }						t_map;
 
 typedef struct s_vertex
@@ -44,7 +47,8 @@ typedef struct s_vertex
 	int				z;
 	int				xo;
 	int				yo;
-	int				zo;
+	int				xtop;
+	int				ytop;
 	int				row;
 	int				col;
 	uint32_t		color;
@@ -59,13 +63,13 @@ typedef struct s_vertex
 
 //structs
 t_map	*read_map(int fd);
-t_vert	*new_vertex(int x, int y, int z, char *color, t_vert *left);
-t_vert	*delete_vertex(t_vert *vertex);
+t_vert	*new_vertex(int x, int y, int z, t_map *map);
 void	connect_vertices(t_map *map);
 void	set_original(t_map *map);
 int		str_to_color(char *str);
 void	get_height(t_map *map);
 void	setup_map(t_map *map);
+void	delete_list(t_map *map);
 //graphics
 void	draw_line(t_vert *start, t_vert *end);
 void	standard_zoom(t_map *map);
@@ -74,7 +78,8 @@ void	translate(t_map *map, int x, int y);
 void	draw_grid(t_map *map);
 //transform
 void	zoom(t_map *map, int in);
-void	center_map(t_map *map);
+void	set_height(t_map *map);
+void	rotate(t_map *map, int dir);
 //mlx
 int		pixelcheck(int x, int y, uint32_t color, mlx_image_t *img);
 void	hook(void *param);
@@ -84,5 +89,6 @@ void	update_image(t_map *map, int in);
 void	print_coordinates(t_map *map);
 char	**free_split(char **split);
 void	terminate(t_map *map);
+void	error(int e, t_map *map);
 
 #endif

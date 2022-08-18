@@ -6,23 +6,25 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:47:22 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/14 18:22:03 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/15 16:20:12 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-t_vert	*new_vertex(int x, int y, int z, char *color, t_vert *prev)
+t_vert	*new_vertex(int x, int y, int z, t_map *map)
 {
 	t_vert	*new;
 
 	new = ft_calloc(1, sizeof(t_vert));
+	if (new == NULL)
+		error(2, map);
 	new->x = x;
 	new->y = y;
 	new->z = z;
-	new->color = str_to_color(color);
+	new->color = 0xFFFFFFFF;
 	new->next = NULL;
-	new->prev = prev;
+	new->prev = NULL;
 	new->left = NULL;
 	new->right = NULL;
 	new->up = NULL;
@@ -32,14 +34,17 @@ t_vert	*new_vertex(int x, int y, int z, char *color, t_vert *prev)
 	return (new);
 }
 
-t_vert	*delete_vertex(t_vert *vertex)
+void	delete_list(t_map *map)
 {
-	t_vert	*following;
+	t_vert	*first;
+	t_vert	*second;
 
-	following = vertex->next;
-	following->prev = NULL;
-	following->left = NULL;
-	if (vertex)
-		free(vertex);
-	return (following);
+	first = map->first;
+	second = first->next;
+	while (second)
+	{
+		free(first);
+		first = second;
+		second = first->next;
+	}
 }

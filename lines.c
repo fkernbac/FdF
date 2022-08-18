@@ -1,17 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line.c                                             :+:      :+:    :+:   */
+/*   lines.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:37:35 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/01 18:04:12 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/16 18:55:42 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//REMOVE
-#include <stdio.h>
 
 #include "FdF.h"
 
@@ -109,6 +106,7 @@ void	bresenham_high(t_vert *start, t_vert *end, int delta_x, int delta_y)
 	}
 }
 
+//CHECK FOR UNNECESSARY CONDITIONS
 void	draw_line(t_vert *start, t_vert *end)
 {
 	int	delta_x;

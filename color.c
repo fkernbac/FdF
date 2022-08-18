@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 15:41:41 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/08 20:03:53 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/15 16:29:10 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	str_to_color(char *str)
 		return (color);
 	len = ft_strlen(str);
 	if (str[0] != '0' && str[1] != 'x')
-		perror("Map file colors not formatted correctly.");
+		perror("Color format error");
 	if (len == 4)
 		color = get_rgba(0, 0, ctoi(str[2]) * 16 + ctoi(str[3]), 255);
 	else if (len == 6)

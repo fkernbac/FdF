@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 15:53:27 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/14 18:01:03 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:33:50 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	connect_vertices(t_map *map)
 			map->corner_l = current;
 		if (current->y == 0)
 			map->corner_r = current;
-		else
+		if (current->y != 0)
 		{
 			current->up = above;
 			above->down = current;
@@ -41,21 +41,6 @@ void	connect_vertices(t_map *map)
 		current = current->next;
 	}
 }
-
-//Saves top right and bottom left corner vertices in map.
-// void	set_corners(t_map *map)
-// {
-// 	t_vert	*current;
-
-// 	current = map->first;
-// 	while (current->right != NULL)
-// 		current = current->right;
-// 	map->corner_r = current;
-// 	current = map->first;
-// 	while (current->down != NULL)
-// 		current = current->down;
-// 	map->corner_l = current;
-// }
 
 //Rotates for isometric perspective.
 void	rotate_map(t_map *map)
@@ -69,6 +54,36 @@ void	rotate_map(t_map *map)
 		old = current->x;
 		current->x += map->last->y - current->y;
 		current->y += old;
+		current = current->next;
+	}
+}
+
+// //Sets up map to fit the window.
+void	zoom_for_window(t_map *map)
+{
+	int		dis_x;
+	int		dis_y;
+	int		factor;
+	t_vert	*current;
+
+	dis_x = (HEIGHT - 1) / map->corner_r->x;
+	dis_y = (WIDTH - 1) / map->last->y;
+	if (dis_x < 2)
+		dis_x = 2;
+	if (dis_y < 2)
+		dis_y = 2;
+	if (dis_x > dis_y)
+		factor = dis_x;
+	else
+		factor = dis_y;
+	current = map->first;
+	while (current != NULL)
+	{
+		current->x *= factor;
+		current->xtop = current->x;
+		current->y *= factor;
+		current->ytop = current->y;
+		current->z *= factor;
 		current = current->next;
 	}
 }
@@ -93,96 +108,26 @@ void	set_height(t_map *map)
 	}
 }
 
-// //Sets up map to fit the window.
-void	fit_to_window(t_map *map)
-{
-	int		dis_x;
-	int		dis_y;
-	int		factor;
-	t_vert	*current;
-
-	dis_x = (HEIGHT - 1) / map->corner_r->x;
-	dis_y = (WIDTH - 1) / map->last->y;
-	if (dis_x < 1)
-		dis_x = 1;
-	if (dis_y < 1)
-		dis_y = 1;
-	if (dis_x > dis_y)
-		factor = dis_x;
-	else
-		factor = dis_y;
-	current = map->first;
-	while (current != NULL)
-	{
-		current->x *= factor;
-		current->y *= factor;
-		current->z *= factor;
-		current = current->next;
-	}
-}
-
-//Squishes for isometric perspective.
-// void	squish_map(t_map *map)
-// {
-// 	t_vert	*current;
-
-// 	current = map->first;
-// 	while (current != NULL)
-// 	{
-// 		current->y *= SQUISH;
-// 		current = current->next;
-// 	}
-// }
-
-//Saves original coordinates into each vertex.
-// void	set_original(t_map *map)
-// {
-// 	t_vert	*current;
-
-// 	current = map->first;
-// 	while (current != NULL)
-// 	{
-// 		current->xo = current->x;
-// 		current->yo = current->y;
-// 		current->zo = current->z;
-// 		current = current->next;
-// 	}
-// }
-
-//Searches for lowest and highest y coordinate.
-// void	get_height(t_map *map)
-// {
-// 	t_vert	*current;
-
-// 	current = map->first;
-// 	map->highest = current;
-// 	map->deepest = current;
-// 	while (current != NULL)
-// 	{
-// 		if (current->y > map->highest->y)
-// 			map->highest = current;
-// 		if (current->y < map->deepest->y)
-// 			map->deepest = current;
-// 		current = current->next;
-// 	}
-// }
-
 //Formats data inside map and saves result as base for transformations.
 void	setup_map(t_map *map)
 {
 	t_vert	*current;
+	int		adjust_y;
 
 	connect_vertices(map);
 	rotate_map(map);
-
+	zoom_for_window(map);
 	set_height(map);
-	fit_to_window(map);
 	current = map->first;
+	adjust_y = abs(map->deepest->y);
+	map->width = map->corner_r->x;
+	map->height = abs(map->deepest->y) + abs(map->highest->y);
 	while (current != NULL)
 	{
+		current->y += adjust_y;
+		current->ytop += adjust_y;
 		current->xo = current->x;
 		current->yo = current->y;
-		current->zo = current->z;
 		current = current->next;
 	}
 }

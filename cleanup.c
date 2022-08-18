@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:42:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/14 18:20:22 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/15 18:55:54 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,28 @@ char	**free_split(char **split)
 	return (NULL);
 }
 
-void	terminate(t_map *map)
+void	clean_memory(t_map *map)
 {
-	t_vert	*current;
-
 	mlx_delete_image(map->mlx, map->img);
 	mlx_terminate(map->mlx);
-	current = map->first;
-	while (current)
-		current = delete_vertex(current);
+	delete_list(map);
 	free(map);
+}
+
+void	error(int e, t_map *map)
+{
+	if (e == 1)
+		perror("Error opening file");
+	if (e == 2)
+		perror("Malloc Error");
+	if (map != NULL)
+		clean_memory(map);
+	exit(EXIT_FAILURE);
+}
+
+void	terminate(t_map *map)
+{
+	if (map != NULL)
+		clean_memory(map);
+	exit(EXIT_SUCCESS);
 }
