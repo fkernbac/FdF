@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/18 16:20:25 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/28 19:25:47 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,21 @@ typedef struct s_map
 	int					rotation;
 	int					height;
 	int					width;
+	int					height_o;
+	int					width_o;
+	int					max_z;
+	int					min_z;
 	struct s_vertex		*highest;
 	struct s_vertex		*deepest;
 	struct mlx_image	*img;
+	struct mlx_image	*img2;
 	int					instance;
 	struct mlx			*mlx;
 	struct s_vertex		*first;
-	struct s_vertex		*corner_r;
-	struct s_vertex		*corner_l;
+	struct s_vertex		*top_right;
+	struct s_vertex		*bottom_left;
 	struct s_vertex		*last;
+	struct s_map		*perspective;
 }						t_map;
 
 typedef struct s_vertex
@@ -73,7 +79,7 @@ void	delete_list(t_map *map);
 //graphics
 void	draw_line(t_vert *start, t_vert *end);
 void	standard_zoom(t_map *map);
-void	zoom(t_map *map, int in);
+void	zoom(t_map *map, int level);
 void	translate(t_map *map, int x, int y);
 void	draw_grid(t_map *map);
 //transform
@@ -90,5 +96,13 @@ void	print_coordinates(t_map *map);
 char	**free_split(char **split);
 void	terminate(t_map *map);
 void	error(int e, t_map *map);
+void	draw_image(t_map *map);
+void	squish_map(t_map *map);
+void	set_original(t_map *map);
+void	update_image(t_map *map, int in);
+void	measure_map(t_map *map);
+void	calc_zoom(t_map *map, int factor);
+//extra perspective
+void	perspective(t_map *map);
 
 #endif

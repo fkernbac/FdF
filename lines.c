@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:37:35 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/16 18:55:42 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/27 20:09:01 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	draw_straight(t_vert *start, t_vert *end, int delta_x, int delta_y)
 {
 	int	x;
 	int	y;
+
 
 	x = start->x;
 	y = start->y;

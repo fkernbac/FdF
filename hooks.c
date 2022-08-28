@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:03:21 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/18 16:02:25 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/27 16:46:27 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,6 @@ void	keyhook(mlx_key_data_t keydata, void *param)
 		rotate(map, -1);
 	if (keydata.key == MLX_KEY_X && keydata.action == MLX_PRESS)
 		rotate(map, 1);
+	if (keydata.key == MLX_KEY_2 && keydata.action == MLX_PRESS)
+		perspective(map);
 }

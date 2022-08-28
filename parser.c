@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 18:21:18 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/15 16:30:14 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/28 19:26:20 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ t_map	*init_map(void)
 	map = ft_calloc(1, sizeof(t_map));
 	if (map == NULL)
 		error(2, NULL);
-	map->corner_r = NULL;
-	map->corner_l = NULL;
+	map->top_right = NULL;
+	map->bottom_left = NULL;
 	map->deepest = 0;
 	map->first = NULL;
 	map->highest = 0;
 	map->img = NULL;
+	map->img2 = NULL;
 	map->instance = 0;
 	map->last = NULL;
 	map->mlx = NULL;

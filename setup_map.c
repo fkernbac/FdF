@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 15:53:27 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/18 16:41:08 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:35:36 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	connect_vertices(t_map *map)
 			current->left = current->prev;
 			current->left->right = current;
 		}
-		if (current->x == 0)
-			map->corner_l = current;
-		if (current->y == 0)
-			map->corner_r = current;
-		if (current->y != 0)
+		if (current->col == 0)
+			map->bottom_left = current;
+		if (current->row == 0)
+			map->top_right = current;
+		if (current->row != 0)
 		{
 			current->up = above;
 			above->down = current;
@@ -66,7 +66,7 @@ void	zoom_for_window(t_map *map)
 	int		factor;
 	t_vert	*current;
 
-	dis_x = (HEIGHT - 1) / map->corner_r->x;
+	dis_x = (HEIGHT - 1) / map->top_right->x;
 	dis_y = (WIDTH - 1) / map->last->y;
 	if (dis_x < 2)
 		dis_x = 2;
@@ -76,6 +76,7 @@ void	zoom_for_window(t_map *map)
 		factor = dis_x;
 	else
 		factor = dis_y;
+
 	current = map->first;
 	while (current != NULL)
 	{
@@ -88,7 +89,41 @@ void	zoom_for_window(t_map *map)
 	}
 }
 
-//Adds z value to grid, squishes map and saves max und min y value.
+void	squish_map(t_map *map)
+{
+	t_vert	*current;
+
+	current = map->first;
+	while (current)
+	{
+		current->y *= SQUISH;
+		current = current->next;
+	}
+}
+
+//Sets an image size for map at zoom 0.
+void	measure_map(t_map *map)
+{
+	t_vert	*current;
+
+	current = map->first;
+	map->max_z = 0;
+	map->min_z = 0;
+	while (current != NULL)
+	{
+		if (current->z > map->max_z)
+			map->max_z = current->z;
+		if (current->z < map->min_z)
+			map->min_z = current->z;
+		current = current->next;
+	}
+	map->width = map->top_right->x;
+	map->width_o = map->width;
+	map->height = map->last->y + abs(map->min_z) * DEPTH + abs(map->max_z) * DEPTH;
+	map->height_o = map->height;
+}
+
+//Adds z value to grid and saves max und min y value.
 void	set_height(t_map *map)
 {
 	t_vert	*current;
@@ -99,7 +134,7 @@ void	set_height(t_map *map)
 	while (current != NULL)
 	{
 		current->y -= current->z * DEPTH;
-		current->y *= SQUISH;
+		current->y += map->max_z * DEPTH;
 		if (current->y > map->highest->y)
 			map->highest = current;
 		if (current->y < map->deepest->y)
@@ -108,26 +143,27 @@ void	set_height(t_map *map)
 	}
 }
 
-//Formats data inside map and saves result as base for transformations.
-void	setup_map(t_map *map)
+void	set_original(t_map *map)
 {
 	t_vert	*current;
-	int		adjust_y;
 
-	connect_vertices(map);
-	rotate_map(map);
-	zoom_for_window(map);
-	set_height(map);
 	current = map->first;
-	adjust_y = abs(map->deepest->y);
-	map->width = map->corner_r->x;
-	map->height = abs(map->deepest->y) + abs(map->highest->y);
 	while (current != NULL)
 	{
-		current->y += adjust_y;
-		current->ytop += adjust_y;
 		current->xo = current->x;
 		current->yo = current->y;
 		current = current->next;
 	}
+}
+
+//Formats data inside map and saves result as base for transformations.
+void	setup_map(t_map *map)
+{
+	connect_vertices(map);
+	rotate_map(map);
+	zoom_for_window(map);
+	squish_map(map);
+	measure_map(map);
+	set_height(map);
+	set_original(map);
 }

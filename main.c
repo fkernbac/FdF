@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/18 16:30:48 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:44:42 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	setup_window(t_map *map)
 	map->img = mlx_new_image(map->mlx, map->width, map->height);
 	if (map->img == NULL)
 		error(2, map);
+	draw_image(map);
 	map->instance = mlx_image_to_window(map->mlx, map->img, \
 		(WIDTH - map->width) / 2, (HEIGHT - map->height) / 2);
 }
@@ -35,14 +36,14 @@ void	draw_grid(t_map *map)
 	{
 		if (current->right)
 		{
-			if (current->x < current->right->x)
+			if (current->x <= current->right->x)
 				draw_line(current, current->right);
 			else
 				draw_line(current->right, current);
 		}
 		if (current->up)
 		{
-			if (current->x < current->up->x)
+			if (current->x <= current->up->x)
 				draw_line(current, current->up);
 			else
 				draw_line(current->up, current);
