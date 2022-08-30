@@ -6,14 +6,14 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:03:21 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/27 16:46:27 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/30 17:21:33 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
 //Checks if another zoom would result in a too small or to big map.
-int	check_zoom(t_map *map, int in)
+int	check_size(t_map *map, int in)
 {
 	int	width;
 	int	height;
@@ -30,8 +30,59 @@ int	check_zoom(t_map *map, int in)
 		width /= ZOOM;
 		height /= ZOOM;
 	}
-	if (abs(width * height) >= 100000000 || width < 20 || height < 20)
+	if (abs(width * height) >= 500000000 || width < 50 || height < 50)
 		return (-1);
+	return (1);
+}
+
+void	switch_projection(t_map *map, int nr)
+{
+	if (nr == 1 && map->inactive_img != NULL)
+	{
+		map->img = map->inactive_img;
+		map->inactive_img = NULL;
+		map->img->instances[map->instance].enabled = 1;
+		map->perspective->img->instances[0].enabled = 0;
+	}
+	else if (nr == 2 && map->inactive_img == NULL)
+	{
+		map->img->instances[map->instance].enabled = 0;
+		map->inactive_img = map->img;
+		create_perspective(map);
+		map->perspective->img->instances[0].enabled = 1;
+		map->img = map->perspective->img;
+	}
+}
+
+int	hook_translate(mlx_key_data_t keydata, t_map *map)
+{
+	if (keydata.key == MLX_KEY_W)
+		map->img->instances[map->instance].y += 20;
+	else if (keydata.key == MLX_KEY_S)
+		map->img->instances[0].y -= 20;
+	else if (keydata.key == MLX_KEY_D)
+		map->img->instances[0].x -= 20;
+	else if (keydata.key == MLX_KEY_A)
+		map->img->instances[0].x += 20;
+	else
+		return (0);
+	return (1);
+}
+
+int	hook_zoom_rota(mlx_key_data_t keydata, t_map *map)
+{
+	if (map->inactive_img != NULL)
+		return (0);
+	else if (keydata.key == MLX_KEY_Q && check_size(map, 1) == 1)
+		zoom(map, map->zoom + 1);
+	else if (keydata.key == MLX_KEY_E && check_size(map, 0) == 1)
+		zoom(map, map->zoom - 1);
+	else if (keydata.key == MLX_KEY_Z)
+		rotate(map, -1);
+	else if (keydata.key == MLX_KEY_X)
+		rotate(map, 1);
+	else
+		return (0);
 	return (1);
 }
 
@@ -40,30 +91,26 @@ void	keyhook(mlx_key_data_t keydata, void *param)
 	t_map	*map;
 
 	map = param;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	if (keydata.action == MLX_REPEAT)
+		hook_translate(keydata, map);
+	else if (keydata.action != MLX_PRESS)
+		return ;
+	else if (keydata.key == MLX_KEY_ESCAPE)
 		terminate(map);
-	if (keydata.key == MLX_KEY_W \
-		&& (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		map->img->instances[map->instance].y += 20;
-	if (keydata.key == MLX_KEY_S \
-		&& (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		map->img->instances[0].y -= 20;
-	if (keydata.key == MLX_KEY_D \
-		&& (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		map->img->instances[0].x -= 20;
-	if (keydata.key == MLX_KEY_A \
-		&& (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-		map->img->instances[0].x += 20;
-	if (keydata.key == MLX_KEY_Q && keydata.action == MLX_PRESS \
-		&& check_zoom(map, 1) == 1)
-		zoom(map, map->zoom + 1);
-	if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS \
-		&& check_zoom(map, 0) == 1)
-		zoom(map, map->zoom - 1);
-	if (keydata.key == MLX_KEY_Z && keydata.action == MLX_PRESS)
-		rotate(map, -1);
-	if (keydata.key == MLX_KEY_X && keydata.action == MLX_PRESS)
-		rotate(map, 1);
-	if (keydata.key == MLX_KEY_2 && keydata.action == MLX_PRESS)
-		perspective(map);
+	else if (hook_translate(keydata, map) == 1)
+		return ;
+	else if (hook_zoom_rota(keydata, map) == 1)
+		return ;
+	else if (keydata.key == MLX_KEY_1)
+		switch_projection(map, 1);
+	else if (keydata.key == MLX_KEY_2)
+		switch_projection(map, 2);
+	else if (keydata.key == MLX_KEY_R && map->inactive_img == NULL)
+		draw_rev_grid(map);
+	else if (keydata.key == MLX_KEY_R && map->inactive_img != NULL)
+		draw_rev_grid(map->perspective);
+	else if (keydata.key == MLX_KEY_T && map->inactive_img == NULL)
+		draw_grid(map);
+	else if (keydata.key == MLX_KEY_T && map->inactive_img != NULL)
+		draw_grid(map->perspective);
 }

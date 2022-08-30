@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 18:21:18 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/28 19:26:20 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/30 20:00:14 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ t_map	*init_map(void)
 	map->first = NULL;
 	map->highest = 0;
 	map->img = NULL;
-	map->img2 = NULL;
+	map->inactive_img = NULL;
 	map->instance = 0;
 	map->last = NULL;
 	map->mlx = NULL;
 	map->zoom = 0;
+	map->perspective = NULL;
 	return (map);
 }
 

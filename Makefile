@@ -13,15 +13,16 @@
 # gcc main.c MLX42/libmlx42.a MLX42/libglfw3.a -I MLX42/include -framework Cocoa -framework OpenGL -framework IOKit
 
 NAME = FdF
-SRC = zoom.c hooks.c struct_utils.c lines.c images.c color.c main.c testing.c cleanup.c setup_map.c parser.c rotate.c perspective.c
+#SRC = example.c
+SRC = zoom.c hooks.c struct_utils.c lines.c images.c color.c main.c testing.c cleanup.c setup_map.c parser.c rotate.c perspective.c map_utils.c
 OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 OBJ_PATH = objs/
 LIB = libft/libft.a MLX42/libglfw3.a MLX42/libmlx42.a
 INC = -Iinclude/
-FLAGS = -Wall -Wextra -Werror #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror
 LINKER = -framework Cocoa -framework OpenGL -framework IOKit -lm
 
-all: $(NAME)
+all: libft mlx $(NAME)
 
 $(NAME): $(OBJ)
 	gcc $(LIB) $(LINKER) $(INC) $(OBJ) -o $@
@@ -31,15 +32,20 @@ $(OBJ_PATH)%.o: %.c
 	gcc -c $(FLAGS) $(INC) $< -o $@
 
 libft:
-	make -C libft/ re
+	make -C libft/ all
+
+mlx:
+	make -C MLX42/ all
 
 clean:
 	/bin/rm -f $(OBJ_PATH)*.o
 	/bin/rm -f *.o
+	make -C libft/ fclean
+	make -C MLX42/ fclean
 
 fclean: clean
 	/bin/rm -f $(NAME)
 
 re: fclean all
 
-.PHONY:  all clean fclean re libft
+.PHONY:  all clean fclean re libft linux mlx

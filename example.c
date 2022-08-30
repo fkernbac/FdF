@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   example.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/31 00:40:08 by W2Wizard          #+#    #+#             */
-/*   Updated: 2022/07/12 21:22:56 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:51:52 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ int32_t	main(void)
 	mlx_loop_hook(mlx, &hook, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
+	system("leaks out");
 	return (EXIT_SUCCESS);
 }

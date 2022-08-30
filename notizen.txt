@@ -1,0 +1,1 @@
+- julia map crashing when zooming out too much FIXED

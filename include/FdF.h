@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/28 19:25:47 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:29:19 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_map
 	struct s_vertex		*highest;
 	struct s_vertex		*deepest;
 	struct mlx_image	*img;
-	struct mlx_image	*img2;
+	struct mlx_image	*inactive_img;
 	int					instance;
 	struct mlx			*mlx;
 	struct s_vertex		*first;
@@ -103,6 +103,9 @@ void	update_image(t_map *map, int in);
 void	measure_map(t_map *map);
 void	calc_zoom(t_map *map, int factor);
 //extra perspective
-void	perspective(t_map *map);
+void	create_perspective(t_map *map);
+//extra feature
+void	draw_rev_grid(t_map *map);
+void	img_update(t_map *map);
 
 #endif

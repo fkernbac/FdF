@@ -6,13 +6,13 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:31:55 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/27 16:01:25 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/30 16:54:11 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-void	update_image(t_map *map, int in)
+void	img_update_resize(t_map *map, int in)
 {
 	int	x;
 	int	y;
@@ -20,7 +20,8 @@ void	update_image(t_map *map, int in)
 	x = map->img->instances[map->instance].x;
 	y = map->img->instances[map->instance].y;
 	mlx_delete_image(map->mlx, map->img);
-	map->img = mlx_new_image(map->mlx, map->width, map->height);
+	ft_printf("%ix%i\n", map->width, map->height);
+	map->img = mlx_new_image(map->mlx, map->width, map->height + 1);
 	if (map->img == NULL)
 		error(2, map);
 	draw_image(map);
@@ -66,8 +67,8 @@ void	resize_map(t_map *map)
 	}
 	else if (map->zoom < 0)
 	{
-		map->height = map->height_o / pow(ZOOM, map->zoom);
-		map->width = map->width_o / pow(ZOOM, map->zoom);
+		map->height = map->height_o / pow(ZOOM, abs(map->zoom));
+		map->width = map->width_o / pow(ZOOM, abs(map->zoom));
 	}
 	else
 	{
@@ -103,6 +104,7 @@ void	zoom(t_map *map, int level)
 		reset_map(map);
 	else
 		calc_zoom(map, factor);
+	ft_printf("zoom level: %i\n", map->zoom);
 	resize_map(map);
-	update_image(map, in);
+	img_update_resize(map, in);
 }

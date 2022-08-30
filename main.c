@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/27 18:44:42 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:59:36 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	setup_window(t_map *map)
 	map->mlx = mlx_init(HEIGHT, WIDTH, "FdF", true);
 	if (map->mlx == NULL)
 		error(2, map);
-	map->img = mlx_new_image(map->mlx, map->width, map->height);
+	map->img = mlx_new_image(map->mlx, map->width, map->height + 1);
 	if (map->img == NULL)
 		error(2, map);
 	draw_image(map);
@@ -31,6 +31,8 @@ void	draw_grid(t_map *map)
 {
 	t_vert		*current;
 
+	if (map == NULL)
+		return ;
 	current = map->first;
 	while (current != NULL)
 	{
@@ -49,6 +51,33 @@ void	draw_grid(t_map *map)
 				draw_line(current->up, current);
 		}
 		current = current->next;
+	}
+}
+
+void	draw_rev_grid(t_map *map)
+{
+	t_vert		*current;
+
+	if (map == NULL)
+		return ;
+	current = map->last;
+	while (current != NULL)
+	{
+		if (current->right)
+		{
+			if (current->x <= current->right->x)
+				draw_line(current, current->right);
+			else
+				draw_line(current->right, current);
+		}
+		if (current->up)
+		{
+			if (current->x <= current->up->x)
+				draw_line(current, current->up);
+			else
+				draw_line(current->up, current);
+		}
+		current = current->prev;
 	}
 }
 
