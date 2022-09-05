@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   map_operations.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:43:24 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 16:47:17 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:56:30 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-//Saves map coordinates to avoid rounding errors.
+//Saves zoom level 0 coordinates to avoid rounding errors.
 void	set_original(t_map *map)
 {
 	t_vert	*current;
@@ -46,6 +46,7 @@ void	set_height(t_map *map)
 	}
 }
 
+//Squishes map for isometric perspective.
 void	squish_map(t_map *map)
 {
 	t_vert	*current;
@@ -58,7 +59,8 @@ void	squish_map(t_map *map)
 	}
 }
 
-//Saves pointers to its neighbors into each vertex and saves corners in map.
+//Sets up a network of pointers between vertex objects.
+//Saves top right and bottom left corner in map.
 void	connect_vertices(t_map *map)
 {
 	t_vert	*current;
@@ -87,3 +89,4 @@ void	connect_vertices(t_map *map)
 		current = current->next;
 	}
 }
+

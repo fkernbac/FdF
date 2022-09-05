@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:42:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 20:03:38 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:01:46 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@ char	**free_split(char **split)
 
 void	clean_memory(t_map *map)
 {
+	if (map == NULL)
+		return ;
+	if (map->mlx)
+		mlx_terminate(map->mlx);
 	if (map->perspective)
 	{
 		delete_list(map->perspective);
-		free(map);
+		free(map->perspective);
 	}
-	mlx_terminate(map->mlx);
 	delete_list(map);
 	free(map);
 }
@@ -41,7 +44,9 @@ void	error(int e, t_map *map)
 	if (e == 1)
 		perror("Error opening file");
 	if (e == 2)
-		perror("Malloc Error");
+		perror("Malloc error");
+	if (e == 3)
+		perror("Color format error");
 	if (map != NULL)
 		clean_memory(map);
 	system("leaks FdF");

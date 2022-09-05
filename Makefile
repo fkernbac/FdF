@@ -14,7 +14,7 @@
 
 NAME = FdF
 #SRC = example.c
-SRC = zoom.c hooks.c struct_utils.c lines.c images.c color.c main.c testing.c cleanup.c setup_map.c parser.c rotate.c perspective.c map_utils.c
+SRC = zoom.c hooks.c vertex.c lines.c main.c testing.c cleanup.c map_setup.c parser.c rotate.c perspective.c map_operations.c extra.c
 OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 OBJ_PATH = objs/
 LIB = libft/libft.a MLX42/libglfw3.a MLX42/libmlx42.a
@@ -24,7 +24,7 @@ LINKER = -framework Cocoa -framework OpenGL -framework IOKit -lm
 
 all: libft mlx $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): include/FdF.h $(OBJ)
 	gcc $(LIB) $(LINKER) $(INC) $(OBJ) -o $@
 
 $(OBJ_PATH)%.o: %.c
@@ -41,7 +41,6 @@ clean:
 	/bin/rm -f $(OBJ_PATH)*.o
 	/bin/rm -f *.o
 	make -C libft/ fclean
-	make -C MLX42/ fclean
 
 fclean: clean
 	/bin/rm -f $(NAME)

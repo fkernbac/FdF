@@ -6,17 +6,17 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 15:37:35 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/27 20:09:01 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/02 15:52:49 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-void	draw_straight(t_vert *start, t_vert *end, int delta_x, int delta_y)
+//Draws vertical up, vertical down, and horizontal right lines.
+void	draw_orthogonal(t_vert *start, t_vert *end, int delta_x, int delta_y)
 {
 	int	x;
 	int	y;
-
 
 	x = start->x;
 	y = start->y;
@@ -37,6 +37,7 @@ void	draw_straight(t_vert *start, t_vert *end, int delta_x, int delta_y)
 	}
 }
 
+//Draws diagonal lines from left to right.
 void	draw_diagonal(t_vert *start, t_vert *end, int sign)
 {
 	int	x;
@@ -55,6 +56,7 @@ void	draw_diagonal(t_vert *start, t_vert *end, int sign)
 	}
 }
 
+//Draws lines to right down.
 void	bresenham_low(t_vert *start, t_vert *end, int delta_x, int delta_y)
 {
 	int	x;
@@ -81,6 +83,7 @@ void	bresenham_low(t_vert *start, t_vert *end, int delta_x, int delta_y)
 	}
 }
 
+//Draws lines to right up.
 void	bresenham_high(t_vert *start, t_vert *end, int delta_x, int delta_y)
 {
 	int	x;
@@ -107,7 +110,8 @@ void	bresenham_high(t_vert *start, t_vert *end, int delta_x, int delta_y)
 	}
 }
 
-//CHECK FOR UNNECESSARY CONDITIONS
+//Decides if the line is up/down, a perfect diagonal,
+//or anything between (bresenham algorithm).
 void	draw_line(t_vert *start, t_vert *end)
 {
 	int	delta_x;
@@ -116,7 +120,7 @@ void	draw_line(t_vert *start, t_vert *end)
 	delta_x = end->x - start->x;
 	delta_y = end->y - start->y;
 	if (delta_x == 0 || delta_y == 0)
-		draw_straight(start, end, delta_x, delta_y);
+		draw_orthogonal(start, end, delta_x, delta_y);
 	else if (delta_y == delta_x || delta_y == delta_x * -1)
 		draw_diagonal(start, end, delta_y / delta_x);
 	else

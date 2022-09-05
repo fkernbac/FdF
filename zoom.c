@@ -6,19 +6,20 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:31:55 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 16:54:11 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:45:18 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
+//Replaces old image by a scaled and translated version for new zoom level.
 void	img_update_resize(t_map *map, int in)
 {
 	int	x;
 	int	y;
 
-	x = map->img->instances[map->instance].x;
-	y = map->img->instances[map->instance].y;
+	x = map->img->instances[0].x;
+	y = map->img->instances[0].y;
 	mlx_delete_image(map->mlx, map->img);
 	ft_printf("%ix%i\n", map->width, map->height);
 	map->img = mlx_new_image(map->mlx, map->width, map->height + 1);
@@ -26,19 +27,20 @@ void	img_update_resize(t_map *map, int in)
 		error(2, map);
 	draw_image(map);
 	draw_grid(map);
-	map->instance = mlx_image_to_window(map->mlx, map->img, x, y);
+	mlx_image_to_window(map->mlx, map->img, x, y);
 	if (in == 1)
 	{
-		map->img->instances[map->instance].x = (4 * x - map->mlx->width) / 2;
-		map->img->instances[map->instance].y = (4 * y - map->mlx->height) / 2;
+		map->img->instances[0].x = (4 * x - map->mlx->width) / 2;
+		map->img->instances[0].y = (4 * y - map->mlx->height) / 2;
 	}
-	else if (in == -1)
+	else
 	{
-		map->img->instances[map->instance].x = (2 * x + map->mlx->width) / 4;
-		map->img->instances[map->instance].y = (2 * y + map->mlx->height) / 4;
+		map->img->instances[0].x = (2 * x + map->mlx->width) / 4;
+		map->img->instances[0].y = (2 * y + map->mlx->height) / 4;
 	}
 }
 
+//Calculates new coordinates based on zoom level 0.
 void	calc_zoom(t_map *map, int factor)
 {
 	t_vert	*current;
@@ -58,6 +60,7 @@ void	calc_zoom(t_map *map, int factor)
 	}
 }
 
+//Sets new map measurements based on zoom level.
 void	resize_map(t_map *map)
 {
 	if (map->zoom > 0)
@@ -77,6 +80,7 @@ void	resize_map(t_map *map)
 	}
 }
 
+//Resets map to zoom level 0.
 void	reset_map(t_map *map)
 {
 	t_vert	*current;
@@ -90,6 +94,7 @@ void	reset_map(t_map *map)
 	}
 }
 
+//Calculates zoom, sets new map measurements and updates image.
 void	zoom(t_map *map, int level)
 {
 	int		factor;

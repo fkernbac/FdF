@@ -6,12 +6,13 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 18:21:18 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 20:00:14 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 13:01:25 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
+//Removes linebreaks from given string.
 char	*remove_newline(char *str)
 {
 	int	i;
@@ -22,11 +23,12 @@ char	*remove_newline(char *str)
 	while (str[++i] != '\0')
 		if (str[i] == '\n')
 			str[i] = '\0';
-	if (str[0] == '\0')
-		free_and_null(str);
+	// if (str[0] == '\0')
+	// 	free_and_null(str);
 	return (str);
 }
 
+//Takes a single string and parses it to height and color values.
 void	str_to_lst(t_map *map, char *string, int x, int y)
 {
 	char	**colorsplit;
@@ -50,12 +52,13 @@ void	str_to_lst(t_map *map, char *string, int x, int y)
 		map->last = map->last->next;
 	}
 	if (colorsplit && colorsplit[0] && colorsplit[1])
-		map->last->color = str_to_color(colorsplit[1]);
+		map->last->color = str_to_color(colorsplit[1], map);
 	free(string);
 	if (colorsplit)
 		free_split(colorsplit);
 }
 
+//Allocates map and sets start values.
 t_map	*init_map(void)
 {
 	t_map	*map;
@@ -70,14 +73,16 @@ t_map	*init_map(void)
 	map->highest = 0;
 	map->img = NULL;
 	map->inactive_img = NULL;
-	map->instance = 0;
 	map->last = NULL;
 	map->mlx = NULL;
 	map->zoom = 0;
+	map->rev = -1;
+	map->transp = -1;
 	map->perspective = NULL;
 	return (map);
 }
 
+//Reads file line by line and saves it in map.
 t_map	*read_map(int fd)
 {
 	char	*line;

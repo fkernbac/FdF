@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 16:29:19 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 12:36:38 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ typedef struct s_map
 	int					width_o;
 	int					max_z;
 	int					min_z;
+	int					rev;
+	int					transp;
 	struct s_vertex		*highest;
 	struct s_vertex		*deepest;
 	struct mlx_image	*img;
 	struct mlx_image	*inactive_img;
-	int					instance;
 	struct mlx			*mlx;
 	struct s_vertex		*first;
 	struct s_vertex		*top_right;
@@ -67,45 +68,40 @@ typedef struct s_vertex
 	struct s_vertex	*down;
 }					t_vert;
 
-//structs
+//input parsing
 t_map	*read_map(int fd);
+int		str_to_color(char *str, t_map *map);
+void	setup_map(t_map *map);
+//vertex list
 t_vert	*new_vertex(int x, int y, int z, t_map *map);
+void	delete_list(t_map *map);
+//map formatting
+t_map	*init_map(void);
 void	connect_vertices(t_map *map);
 void	set_original(t_map *map);
-int		str_to_color(char *str);
-void	get_height(t_map *map);
-void	setup_map(t_map *map);
-void	delete_list(t_map *map);
-//graphics
-void	draw_line(t_vert *start, t_vert *end);
-void	standard_zoom(t_map *map);
-void	zoom(t_map *map, int level);
-void	translate(t_map *map, int x, int y);
-void	draw_grid(t_map *map);
-//transform
-void	zoom(t_map *map, int in);
 void	set_height(t_map *map);
+void	squish_map(t_map *map);
+//line algorithms
+void	draw_line(t_vert *start, t_vert *end);
+void	draw_grid(t_map *map);
+//FdF features
+void	zoom(t_map *map, int level);
+void	calc_zoom(t_map *map, int factor);
 void	rotate(t_map *map, int dir);
+void	create_perspective(t_map *map);
+void	draw_rev_grid(t_map *map);
+void	add_transparency(t_map *map);
 //mlx
 int		pixelcheck(int x, int y, uint32_t color, mlx_image_t *img);
-void	hook(void *param);
 void	keyhook(mlx_key_data_t keydata, void *param);
-void	update_image(t_map *map, int in);
-//utilities
-void	print_coordinates(t_map *map);
+void	img_update(t_map *map);
+//memory management
 char	**free_split(char **split);
 void	terminate(t_map *map);
 void	error(int e, t_map *map);
+//testing
+void	print_coordinates(t_map *map);
 void	draw_image(t_map *map);
-void	squish_map(t_map *map);
-void	set_original(t_map *map);
-void	update_image(t_map *map, int in);
-void	measure_map(t_map *map);
-void	calc_zoom(t_map *map, int factor);
-//extra perspective
-void	create_perspective(t_map *map);
-//extra feature
-void	draw_rev_grid(t_map *map);
-void	img_update(t_map *map);
+void	draw_coordinates(t_map *map);
 
 #endif

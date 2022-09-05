@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 19:59:36 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 14:41:29 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,63 +22,32 @@ void	setup_window(t_map *map)
 	if (map->img == NULL)
 		error(2, map);
 	draw_image(map);
-	map->instance = mlx_image_to_window(map->mlx, map->img, \
+	mlx_image_to_window(map->mlx, map->img, \
 		(WIDTH - map->width) / 2, (HEIGHT - map->height) / 2);
 }
 
-//Draws the data of map on the image.
-void	draw_grid(t_map *map)
+int	pixelcheck(int x, int y, uint32_t color, mlx_image_t *img)
 {
-	t_vert		*current;
-
-	if (map == NULL)
-		return ;
-	current = map->first;
-	while (current != NULL)
-	{
-		if (current->right)
-		{
-			if (current->x <= current->right->x)
-				draw_line(current, current->right);
-			else
-				draw_line(current->right, current);
-		}
-		if (current->up)
-		{
-			if (current->x <= current->up->x)
-				draw_line(current, current->up);
-			else
-				draw_line(current->up, current);
-		}
-		current = current->next;
-	}
+	if (x < 0 || x >= (int)img->width || y < 0 || y >= (int)img->height)
+		return (0);
+	mlx_put_pixel(img, x, y, color);
+	return (1);
 }
 
-void	draw_rev_grid(t_map *map)
+void	img_update(t_map *map)
 {
-	t_vert		*current;
+	mlx_image_t	*img;
 
-	if (map == NULL)
-		return ;
-	current = map->last;
-	while (current != NULL)
+	img = map->img;
+	ft_memset(img->pixels, 0, img->width * img->height * sizeof(int32_t));
+	if (map->rev == -1)
+		draw_grid(map);
+	else
 	{
-		if (current->right)
-		{
-			if (current->x <= current->right->x)
-				draw_line(current, current->right);
-			else
-				draw_line(current->right, current);
-		}
-		if (current->up)
-		{
-			if (current->x <= current->up->x)
-				draw_line(current, current->up);
-			else
-				draw_line(current->up, current);
-		}
-		current = current->prev;
+		map->rev = -1;
+		draw_rev_grid(map);
 	}
+	draw_image(map);
 }
 
 int	main(int argc, char **argv)

@@ -6,12 +6,15 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:02:08 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 16:51:30 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 12:54:12 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
+
+
+//Resets map to top view without height values.
 void	flatten_map(t_map *map)
 {
 	t_vert	*current;
@@ -25,6 +28,7 @@ void	flatten_map(t_map *map)
 	}
 }
 
+//Calculates new coordinates starting at rotation 0.
 void	calc_rotate(t_map *map, int steps)
 {
 	t_vert	*current;
@@ -48,6 +52,7 @@ void	calc_rotate(t_map *map, int steps)
 	}
 }
 
+//Resets map, rotates, sets new original, and reapplies zoom and height.
 void	rotate(t_map *map, int dir)
 {
 	map->rotation = (map->rotation + dir) % 4;

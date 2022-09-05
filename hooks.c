@@ -6,13 +6,13 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:03:21 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 17:21:33 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 14:46:22 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
-//Checks if another zoom would result in a too small or to big map.
+//Sets limits on possible zoom values.
 int	check_size(t_map *map, int in)
 {
 	int	width;
@@ -35,18 +35,19 @@ int	check_size(t_map *map, int in)
 	return (1);
 }
 
+//Switches between isometric (1) and perspective (2) projection.
 void	switch_projection(t_map *map, int nr)
 {
 	if (nr == 1 && map->inactive_img != NULL)
 	{
 		map->img = map->inactive_img;
 		map->inactive_img = NULL;
-		map->img->instances[map->instance].enabled = 1;
+		map->img->instances[0].enabled = 1;
 		map->perspective->img->instances[0].enabled = 0;
 	}
 	else if (nr == 2 && map->inactive_img == NULL)
 	{
-		map->img->instances[map->instance].enabled = 0;
+		map->img->instances[0].enabled = 0;
 		map->inactive_img = map->img;
 		create_perspective(map);
 		map->perspective->img->instances[0].enabled = 1;
@@ -54,10 +55,11 @@ void	switch_projection(t_map *map, int nr)
 	}
 }
 
+//Handles translation (WASD).
 int	hook_translate(mlx_key_data_t keydata, t_map *map)
 {
 	if (keydata.key == MLX_KEY_W)
-		map->img->instances[map->instance].y += 20;
+		map->img->instances[0].y += 20;
 	else if (keydata.key == MLX_KEY_S)
 		map->img->instances[0].y -= 20;
 	else if (keydata.key == MLX_KEY_D)
@@ -69,6 +71,7 @@ int	hook_translate(mlx_key_data_t keydata, t_map *map)
 	return (1);
 }
 
+//Handles zoom (Q, E) and rotation (Z, X) functions.
 int	hook_zoom_rota(mlx_key_data_t keydata, t_map *map)
 {
 	if (map->inactive_img != NULL)
@@ -77,15 +80,16 @@ int	hook_zoom_rota(mlx_key_data_t keydata, t_map *map)
 		zoom(map, map->zoom + 1);
 	else if (keydata.key == MLX_KEY_E && check_size(map, 0) == 1)
 		zoom(map, map->zoom - 1);
-	else if (keydata.key == MLX_KEY_Z)
-		rotate(map, -1);
 	else if (keydata.key == MLX_KEY_X)
+		rotate(map, -1);
+	else if (keydata.key == MLX_KEY_Z)
 		rotate(map, 1);
 	else
 		return (0);
 	return (1);
 }
 
+//Relays user input to the right functions.
 void	keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_map	*map;
@@ -105,12 +109,8 @@ void	keyhook(mlx_key_data_t keydata, void *param)
 		switch_projection(map, 1);
 	else if (keydata.key == MLX_KEY_2)
 		switch_projection(map, 2);
-	else if (keydata.key == MLX_KEY_R && map->inactive_img == NULL)
+	else if (keydata.key == MLX_KEY_R)
 		draw_rev_grid(map);
-	else if (keydata.key == MLX_KEY_R && map->inactive_img != NULL)
-		draw_rev_grid(map->perspective);
-	else if (keydata.key == MLX_KEY_T && map->inactive_img == NULL)
-		draw_grid(map);
-	else if (keydata.key == MLX_KEY_T && map->inactive_img != NULL)
-		draw_grid(map->perspective);
+	else if (keydata.key == MLX_KEY_T)
+		add_transparency(map);
 }

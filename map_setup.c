@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_map.c                                        :+:      :+:    :+:   */
+/*   map_setup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 15:53:27 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 17:07:47 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/02 16:23:49 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	isometric_rotate(t_map *map)
 	}
 }
 
-//Sets up map to fit the window.
+//Scales map size to fit the window.
 void	scale_to_window(t_map *map)
 {
 	int		dis_x;
@@ -67,7 +67,8 @@ void	measure_map(t_map *map)
 	}
 	map->width = map->top_right->x;
 	map->width_o = map->width;
-	map->height = map->last->y + abs(map->min_z) * DEPTH + abs(map->max_z) * DEPTH;
+	map->height = map->last->y \
+		+ abs(map->min_z) * DEPTH + abs(map->max_z) * DEPTH;
 	map->height_o = map->height;
 }
 
