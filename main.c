@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 14:41:29 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 15:37:17 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ int	main(int argc, char **argv)
 	int		fd;
 	t_map	*map;
 
+	if (argc != 2)
+		error(0, NULL);
 	fd = open(argv[1], O_RDONLY);
-	if (argc != 2 || fd < 0)
+	if (fd < 0)
 		error(1, NULL);
 	map = read_map(fd);
 	close(fd);

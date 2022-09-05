@@ -24,7 +24,7 @@ LINKER = -framework Cocoa -framework OpenGL -framework IOKit -lm
 
 all: libft mlx $(NAME)
 
-$(NAME): include/FdF.h $(OBJ)
+$(NAME): $(OBJ)
 	gcc $(LIB) $(LINKER) $(INC) $(OBJ) -o $@
 
 $(OBJ_PATH)%.o: %.c

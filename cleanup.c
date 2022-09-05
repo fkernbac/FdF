@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:42:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 13:01:46 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/05 15:46:02 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,10 @@ void	clean_memory(t_map *map)
 
 void	error(int e, t_map *map)
 {
+	if (e == 0)
+		ft_printf("Invalid parameters");
 	if (e == 1)
-		perror("Error opening file");
+		perror("File error");
 	if (e == 2)
 		perror("Malloc error");
 	if (e == 3)
