@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 16:43:24 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/02 16:56:30 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:49:20 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,3 @@ void	connect_vertices(t_map *map)
 		current = current->next;
 	}
 }
-

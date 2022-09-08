@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:31:55 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/02 16:45:18 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:08:45 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	img_update_resize(t_map *map, int in)
 	map->img = mlx_new_image(map->mlx, map->width, map->height + 1);
 	if (map->img == NULL)
 		error(2, map);
-	draw_image(map);
 	draw_grid(map);
 	mlx_image_to_window(map->mlx, map->img, x, y);
 	if (in == 1)

@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:03:21 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 14:46:22 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:28:54 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_size(t_map *map, int in)
 		width /= ZOOM;
 		height /= ZOOM;
 	}
-	if (abs(width * height) >= 500000000 || width < 50 || height < 50)
+	if (abs(width * height) >= 200000000 || width < 50 || height < 50)
 		return (-1);
 	return (1);
 }

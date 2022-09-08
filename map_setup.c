@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 15:53:27 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/02 16:23:49 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:20:14 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	scale_to_window(t_map *map)
 	t_vert	*current;
 
 	dis_x = WIDTH / map->top_right->x;
-	if (dis_x < 4)
-		dis_x = 4;
+	if (dis_x < 10)
+		dis_x = 10;
 	current = map->first;
 	while (current != NULL)
 	{

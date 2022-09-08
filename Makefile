@@ -10,11 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
-# gcc main.c MLX42/libmlx42.a MLX42/libglfw3.a -I MLX42/include -framework Cocoa -framework OpenGL -framework IOKit
-
 NAME = FdF
 #SRC = example.c
-SRC = zoom.c hooks.c vertex.c lines.c main.c testing.c cleanup.c map_setup.c parser.c rotate.c perspective.c map_operations.c extra.c
+SRC = main.c cleanup.c parser.c map_setup.c map_operations.c vertex.c \
+	hooks.c lines.c zoom.c rotate.c perspective.c extra.c testing.c
 OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 OBJ_PATH = objs/
 LIB = libft/libft.a MLX42/libglfw3.a MLX42/libmlx42.a
@@ -40,7 +39,6 @@ mlx:
 clean:
 	/bin/rm -f $(OBJ_PATH)*.o
 	/bin/rm -f *.o
-	make -C libft/ fclean
 
 fclean: clean
 	/bin/rm -f $(NAME)

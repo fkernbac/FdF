@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 17:47:22 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/02 16:27:06 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:17:04 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	delete_list(t_map *map)
 	t_vert	*first;
 	t_vert	*second;
 
+	if (map->first == NULL)
+		return ;
 	first = map->first;
 	second = first->next;
 	while (second)

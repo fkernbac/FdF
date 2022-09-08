@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 16:04:02 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 15:09:56 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:02:46 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_vert	*copy_vertex(t_vert *original)
 	int		dis;
 
 	dis = original->map->width_o / (original->map->last->col + 1);
-	copy = new_vertex(original->col, original->row, original->z, \
+	copy = new_vertex(original->col, original->row, original->z * DEPTH, \
 		original->map->perspective);
 	copy->color = original->color;
 	copy->row = original->row;
@@ -57,34 +57,47 @@ void	copy_grid(t_map *old, t_map *new)
 void	project_perspective(t_map *map)
 {
 	t_vert	*current;
-	int		y_of_image_plane;
 	int		eye_x;
 	int		eye_z;
 
-	y_of_image_plane = map->mlx->height * 1.3;
-	eye_x = map->width / 2;
-	eye_z = map->mlx->height - (map->mlx->height / 3);
 	current = map->first;
+	map->highest = current;
+	map->deepest = current;
+	eye_x = map->width / 2;
+	eye_z = map->mlx->height - map->mlx->height * 0.2;
 	while (current)
 	{
 		current->x = eye_x + ((current->x - eye_x) * \
-			y_of_image_plane / (current->y + y_of_image_plane));
+			EYE_D / (current->y + EYE_D));
 		current->y = eye_z + ((current->z - eye_z) * \
-			y_of_image_plane / (current->y + y_of_image_plane));
+			EYE_D / (current->y + EYE_D));
+		if (current->y > map->highest->y)
+			map->highest = current;
+		if (current->y < map->deepest->y)
+			map->deepest = current;
 		current = current->next;
 	}
 }
 
-//Mirrors map from top left to bottom right corner.
-void	mirror(t_map *map)
+//Adjusts image coordinates and mirrors map.
+void	mirror_adjust(t_map *map)
 {
 	t_vert	*current;
+	int		adjust_y;
 
+	current = map->first;
+	adjust_y = -1 * map->deepest->y;
+	while (current)
+	{
+		current->y += adjust_y;
+		current = current->next;
+	}
+	map->height = map->highest->y + 1;
 	current = map->first;
 	while (current)
 	{
-		current->y = map->img->height - current->y;
-		current->x = map->img->width - current->x - 1;
+		current->y = map->height - current->y - 1;
+		current->x = map->width - current->x - 1;
 		current = current->next;
 	}
 }
@@ -99,14 +112,17 @@ void	create_perspective(t_map *map)
 		error(2, map);
 	map->perspective->mlx = map->mlx;
 	map->perspective->width = map->width_o;
-	map->perspective->height = map->mlx->height;
+	map->perspective->height = map->height_o;
 	copy_grid(map, map->perspective);
 	connect_vertices(map->perspective);
 	map->perspective->width = map->perspective->last->x + 1;
-	map->perspective->img = mlx_new_image(map->mlx, map->perspective->width, map->mlx->height);
 	project_perspective(map->perspective);
-	mirror(map->perspective);
+	mirror_adjust(map->perspective);
+	map->perspective->img = mlx_new_image \
+		(map->mlx, map->perspective->width, map->perspective->height);
 	draw_rev_grid(map->perspective);
 	draw_image(map->perspective);
-	mlx_image_to_window(map->mlx, map->perspective->img, (map->mlx->width - map->perspective->width) / 2, 0);
+	mlx_image_to_window(map->mlx, map->perspective->img, \
+		(map->perspective->width - map->mlx->width) / -2, \
+		map->mlx->height - map->perspective->height);
 }

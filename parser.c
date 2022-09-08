@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 18:21:18 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 13:01:25 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:23:51 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char	*remove_newline(char *str)
 	while (str[++i] != '\0')
 		if (str[i] == '\n')
 			str[i] = '\0';
-	// if (str[0] == '\0')
-	// 	free_and_null(str);
 	return (str);
 }
 
@@ -68,9 +66,11 @@ t_map	*init_map(void)
 		error(2, NULL);
 	map->top_right = NULL;
 	map->bottom_left = NULL;
-	map->deepest = 0;
+	map->deepest = NULL;
+	map->highest = NULL;
+	map->max_z = 0;
+	map->min_z = 0;
 	map->first = NULL;
-	map->highest = 0;
 	map->img = NULL;
 	map->inactive_img = NULL;
 	map->last = NULL;
@@ -102,11 +102,11 @@ t_map	*read_map(int fd)
 		split = ft_split(line, ' ');
 		if (split == NULL)
 			error(2, map);
-		free(line);
 		while (split[++x] != NULL)
 			str_to_lst(map, split[x], x, y);
 		x = -1;
 		y++;
+		free(line);
 		free(split);
 	}
 	return (map);

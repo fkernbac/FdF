@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 16:55:27 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 14:34:58 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:02:03 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,13 @@ void	add_transparency(t_map *map)
 	double		step;
 
 	current = map->first;
-	step = (double)255 / (double)map->last->row;
+	if (map->last->row > 1)
+		step = (double)255 / (double)(map->last->row + 1);
+	else
+		step = 0.8;
 	if (map->inactive_img)
 		add_transparency(map->perspective);
-	// if (map->transp == 1)
-		rm_transparency(map);
+	rm_transparency(map);
 	while (map->transp == -1 && current)
 	{
 		current->color -= (double)step * (double)current->row;

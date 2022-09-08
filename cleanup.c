@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:42:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 15:46:02 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:10:59 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	error(int e, t_map *map)
 		perror("Color format error");
 	if (map != NULL)
 		clean_memory(map);
-	system("leaks FdF");
 	exit(EXIT_FAILURE);
 }
 
@@ -59,6 +58,5 @@ void	terminate(t_map *map)
 {
 	if (map != NULL)
 		clean_memory(map);
-	system("leaks FdF");
 	exit(EXIT_SUCCESS);
 }

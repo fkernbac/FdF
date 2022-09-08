@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/12 21:54:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 15:37:17 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:21:49 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	setup_window(t_map *map)
 {
-	map->mlx = mlx_init(HEIGHT, WIDTH, "FdF", true);
+	map->mlx = mlx_init(WIDTH, HEIGHT, "FdF", true);
 	if (map->mlx == NULL)
 		error(2, map);
 	map->img = mlx_new_image(map->mlx, map->width, map->height + 1);
@@ -47,7 +47,6 @@ void	img_update(t_map *map)
 		map->rev = -1;
 		draw_rev_grid(map);
 	}
-	draw_image(map);
 }
 
 int	main(int argc, char **argv)
@@ -62,9 +61,10 @@ int	main(int argc, char **argv)
 		error(1, NULL);
 	map = read_map(fd);
 	close(fd);
+	if (map->first == NULL || map->first == map->last)
+		error(1, map);
 	setup_map(map);
 	setup_window(map);
-	mlx_set_window_pos(map->mlx, 100, 300);
 	draw_grid(map);
 	mlx_key_hook(map->mlx, &keyhook, map);
 	mlx_loop(map->mlx);

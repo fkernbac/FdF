@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 15:44:37 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 19:03:52 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 # include "MLX42/MLX42.h"
 # include "libft.h"
 # define READ_SIZE 50
-# define WIDTH 900
-# define HEIGHT 900
-# define DEPTH 0.3
+# define WIDTH 2000
+# define HEIGHT 1000
+# define DEPTH 0.1
 # define ZOOM 2
 # define SQUISH 0.6
+# define EYE_D 1200
 
 typedef struct s_map
 {

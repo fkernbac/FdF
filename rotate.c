@@ -6,13 +6,11 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:02:08 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/05 12:54:12 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:03:23 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
-
-
 
 //Resets map to top view without height values.
 void	flatten_map(t_map *map)
