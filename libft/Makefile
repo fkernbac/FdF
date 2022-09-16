@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
+NAME = libft
 
 SRC = ft_atoi.c ft_isdigit.c ft_memmove.c ft_split.c ft_strlcpy.c\
 	ft_strtrim.c ft_bzero.c ft_isprint.c ft_memset.c ft_strchr.c ft_strlen.c\
@@ -26,21 +26,22 @@ SRC = ft_atoi.c ft_isdigit.c ft_memmove.c ft_split.c ft_strlcpy.c\
 
 OBJ = $(SRC:.c=.o)
 
+
+
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	ar -crsu $(NAME) $(OBJ)
+$(NAME): $(NAME).a
 
-bonus: $(BON_OBJ)
-	ar -crsu $(NAME) $(BON_OBJ)
+$(NAME).a: $(OBJ)
+	ar -ru $@ $(OBJ)
 
 %.o: %.c
-	gcc -c -Wall -Wextra -Werror $< -o $@
+	@gcc -Wall -Wextra -Werror -c $< -o $@
 
 clean:
 	/bin/rm -f *.o
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	/bin/rm -f $(NAME).a
 
 re: fclean all
