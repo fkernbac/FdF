@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 16:04:02 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/08 20:02:46 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:36:24 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ void	create_perspective(t_map *map)
 	map->perspective->img = mlx_new_image \
 		(map->mlx, map->perspective->width, map->perspective->height);
 	draw_rev_grid(map->perspective);
-	draw_image(map->perspective);
 	mlx_image_to_window(map->mlx, map->perspective->img, \
 		(map->perspective->width - map->mlx->width) / -2, \
 		map->mlx->height - map->perspective->height);

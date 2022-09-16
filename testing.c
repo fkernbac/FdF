@@ -6,12 +6,13 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 19:01:59 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/08/30 16:31:15 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/12 17:21:24 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
+//Prints out height value of each vertex.
 void	print_coordinates(t_map *map)
 {
 	t_vert	*current;
@@ -25,6 +26,7 @@ void	print_coordinates(t_map *map)
 	}
 }
 
+//Paints coordinate pixels without lines.
 void	draw_coordinates(t_map *map)
 {
 	t_vert	*current;
@@ -37,6 +39,7 @@ void	draw_coordinates(t_map *map)
 	}
 }
 
+//Paints pixels in each corner of the image.
 void	draw_image(t_map *map)
 {
 	pixelcheck(1, 1, 0xFF0000FF, map->img);

@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 18:19:57 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/08 19:03:52 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/16 15:09:15 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	add_transparency(t_map *map);
 int		pixelcheck(int x, int y, uint32_t color, mlx_image_t *img);
 void	keyhook(mlx_key_data_t keydata, void *param);
 void	img_update(t_map *map);
+void	setup_window(t_map *map);
 //memory management
 char	**free_split(char **split);
 void	terminate(t_map *map);

@@ -6,12 +6,13 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:42:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/08 20:10:59 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/16 16:27:55 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FdF.h"
 
+//Frees split double char pointer.
 char	**free_split(char **split)
 {
 	int	i;
@@ -24,6 +25,7 @@ char	**free_split(char **split)
 	return (NULL);
 }
 
+//Frees any allocated memory map links to.
 void	clean_memory(t_map *map)
 {
 	if (map == NULL)
@@ -39,10 +41,11 @@ void	clean_memory(t_map *map)
 	free(map);
 }
 
+//Prints error, frees memory and exits.
 void	error(int e, t_map *map)
 {
 	if (e == 0)
-		ft_printf("Invalid parameters");
+		perror("Invalid parameters");
 	if (e == 1)
 		perror("File error");
 	if (e == 2)
@@ -54,6 +57,7 @@ void	error(int e, t_map *map)
 	exit(EXIT_FAILURE);
 }
 
+//Frees memory and exits.
 void	terminate(t_map *map)
 {
 	if (map != NULL)

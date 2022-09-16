@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 15:31:55 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/08 20:08:45 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/16 15:18:55 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	img_update_resize(t_map *map, int in)
 	x = map->img->instances[0].x;
 	y = map->img->instances[0].y;
 	mlx_delete_image(map->mlx, map->img);
-	ft_printf("%ix%i\n", map->width, map->height);
+	ft_printf("map size: %ix%i\n", map->width, map->height);
 	map->img = mlx_new_image(map->mlx, map->width, map->height + 1);
 	if (map->img == NULL)
 		error(2, map);

@@ -11,15 +11,16 @@
 # **************************************************************************** #
 
 NAME = FdF
-#SRC = example.c
 SRC = main.c cleanup.c parser.c map_setup.c map_operations.c vertex.c \
-	hooks.c lines.c zoom.c rotate.c perspective.c extra.c testing.c
+	mlx_utils.c hooks.c lines.c zoom.c rotate.c perspective.c extra.c testing.c
 OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 OBJ_PATH = objs/
 LIB = libft/libft.a MLX42/libglfw3.a MLX42/libmlx42.a
 INC = -Iinclude/
 FLAGS = -Wall -Wextra -Werror
 LINKER = -framework Cocoa -framework OpenGL -framework IOKit -lm
+
+
 
 all: libft mlx $(NAME)
 

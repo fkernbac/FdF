@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:02:08 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/08 20:03:23 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/16 15:18:37 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	calc_rotate(t_map *map, int steps)
 
 	current = map->first;
 	x_max = map->top_right->x;
-	ft_printf("rotation %i\n", steps);
+	ft_printf("rotation level: %i\n", steps);
 	while (steps > 0)
 	{
 		x = current->x;
