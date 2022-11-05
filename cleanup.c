@@ -6,7 +6,7 @@
 /*   By: fkernbac <fkernbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 14:42:09 by fkernbac          #+#    #+#             */
-/*   Updated: 2022/09/16 16:27:55 by fkernbac         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:19:12 by fkernbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ void	terminate(t_map *map)
 {
 	if (map != NULL)
 		clean_memory(map);
+	system("leaks FdF");
 	exit(EXIT_SUCCESS);
 }
